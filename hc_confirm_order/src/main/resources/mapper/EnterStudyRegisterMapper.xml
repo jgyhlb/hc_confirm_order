@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hclg.hc_confirm_order.dao.EnterStudyRegisterDao">
+
+
+    <insert id="saveInfo" parameterType="com.hclg.hc_confirm_order.pojo.EnterStudyRegister">
+       insert into enter_study_register
+        (project_name,name,worked_year,education,profession,required,target,confuse,expect,nick_name)
+        value
+        (#{projectName},#{name},#{workYear},#{education},#{profession},#{require},#{target},#{confuse},#{expect},#{nickName})
+    </insert>
+
+
+
+
+</mapper>
