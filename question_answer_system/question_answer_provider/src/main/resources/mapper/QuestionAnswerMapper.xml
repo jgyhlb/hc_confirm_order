@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hclg.question.dao.QuestionAnswerDao">
+
+    <resultMap id="baseResultMap" type="com.hclg.question.pojo.QuestionAndAnswer">
+
+        <id property="id" column="id"></id>
+        <result property="question" column="question"></result>
+        <result property="answerScore" column="answer_score"></result>
+        <result property="answer" column="answer"></result>
+        <result property="userName" column="user_name"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="editorStatus" column="editor_status"></result>
+        <result property="userId" column="user_id"></result>
+
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,question,answer_score,answer,user_name,create_time,update_time,editor_status,user_id
+    </sql>
+
+    <select id="queryAllQuestions" resultMap="baseResultMap">
+        select
+        <include refid="baseColumn"></include>
+        from question_and_answer
+        <where>
+            <if test="questionAndAnswer.editorStatus != null and questionAndAnswer.editorStatus != ''">
+                and editor_status = #{questionAndAnswer.editorStatus}
+            </if>
+            <if test="questionAndAnswer.question != null and questionAndAnswer.question != ''">
+                and question like CONCAT(CONCAT('%',#{questionAndAnswer.question},'%'))
+            </if>
+            <if test="startTime != null and endTime != null">
+                and create_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+         order by id desc
+    </select>
+
+    <select id="queryQuestionById" resultMap="baseResultMap">
+        select question,answer from question_and_answer
+        where id = #{id}
+    </select>
+
+    <select id="queryNoAnswerQuestion" resultMap="baseResultMap">
+        select <include refid="baseColumn"></include>
+            from
+                question_and_answer
+        where answer is null or answer = '' order by id desc
+    </select>
+
+    <select id="queryAnswerQuestionByUserId" resultMap="baseResultMap">
+        select <include refid="baseColumn"></include>
+        from
+        question_and_answer q inner join sys_token s on q.user_id = s.user_id
+        where user_id = #{userId} order by id desc
+    </select>
+
+    <delete id="deleteOneQuestionById" parameterType="Integer">
+        delete from question_and_answer where id = #{id}
+    </delete>
+
+    <update id="updateOneQuestion" parameterType="com.hclg.question.pojo.QuestionAndAnswer">
+        update question_and_answer set
+        question = #{question},
+        answer = #{answer},update_time = #{updateTime},
+        question = #{question},
+        answer_score = #{answerScore},user_id = #{userId} where id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="com.hclg.question.pojo.QuestionAndAnswer">
+        update question_and_answer set
+        editor_status = #{editorStatus},user_id = #{userId} where id = #{id}
+    </update>
+
+    <insert id="insertOneQuestion" parameterType="com.hclg.question.pojo.QuestionAndAnswer">
+        insert into question_and_answer
+        (question,answer_score,answer,user_name,create_time,editor_status,user_id)
+        values (#{question},#{answerScore},#{answer},#{userName},#{createTime},#{editorStatus},#{userId})
+    </insert>
+
+    <insert id="uploadOneQuestion" parameterType="com.hclg.question.pojo.QuestionAndAnswer">
+        insert into question_and_answer
+        (question,answer,create_time)
+        values (#{question},#{answer},#{createTime})
+    </insert>
+
+
+</mapper>

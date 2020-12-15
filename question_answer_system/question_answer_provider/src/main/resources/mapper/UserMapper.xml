@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hclg.question.dao.UserDao">
+
+    <resultMap id="baseResultMap" type="com.hclg.question.pojo.User">
+
+        <id property="userId" column="user_id"></id>
+        <result property="username" column="username"></result>
+        <result property="password" column="password"></result>
+
+    </resultMap>
+
+    <select id="findByUsername" resultMap="baseResultMap">
+        select user_id,username,password from user where username = #{username}
+    </select>
+
+    <select id="findByUserId" resultMap="baseResultMap">
+        select user_id,username,password from user where user_id = #{userId}
+    </select>
+
+    <select id="queryAllUsers" resultMap="baseResultMap">
+        select user_id,username from user where username != 'admin' order by user_id desc
+    </select>
+
+    <insert id="insertOneUser">
+        insert into user(user_id,username,password) values (#{userId},#{username},#{password})
+    </insert>
+
+    <delete id="deleteOneUser">
+        delete from user where user_id = #{userId}
+    </delete>
+
+    <update id="updatePassword">
+        update user set password = #{password} where user_id = #{userId}
+    </update>
+
+
+</mapper>

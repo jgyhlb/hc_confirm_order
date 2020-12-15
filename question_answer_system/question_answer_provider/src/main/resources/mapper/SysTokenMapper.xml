@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hclg.question.dao.SysTokenDao">
+
+    <resultMap id="baseResultMap" type="com.hclg.question.pojo.SysToken">
+
+        <id property="userId" column="user_id"></id>
+        <result property="token" column="token"></result>
+        <result property="expireTime" column="expire_time"></result>
+        <result property="updateTime" column="update_time"></result>
+
+
+    </resultMap>
+
+    <select id="findByToken" resultMap="baseResultMap">
+        select user_id,token,expire_time,update_time from sys_token where token = #{token}
+    </select>
+
+    <select id="findByUserId" resultMap="baseResultMap">
+        select user_id,token,expire_time,update_time from sys_token where user_id = #{userId}
+    </select>
+
+    <insert id="save">
+        insert ignore into sys_token(user_id,token,expire_time,update_time) values (#{userId},#{token},#{expireTime},#{updateTime})
+    </insert>
+
+    <update id="update">
+        update
+            sys_token
+        set
+            token = #{token},
+            expire_time = #{expireTime},
+            update_time = #{updateTime}
+        where
+            user_id = #{userId}
+    </update>
+
+
+</mapper>

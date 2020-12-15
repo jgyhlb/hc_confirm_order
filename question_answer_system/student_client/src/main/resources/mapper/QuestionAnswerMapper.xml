@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hclg.student.dao.QuestionAnswerDao">
+
+    <insert id="insertOneQuestion" parameterType="com.hclg.student.pojo.QuestionAndAnswer">
+        insert into question_and_answer
+        (question,answer_score,answer,user_name,create_time,editor_status,user_id)
+        values (#{question},#{answerScore},#{answer},#{userName},#{createTime},#{editorStatus},#{userId})
+    </insert>
+
+    <select id="queryQuestion" resultType="java.lang.String">
+        select question from question_and_answer where question = #{question}
+    </select>
+
+
+
+
+
+</mapper>
